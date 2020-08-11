@@ -1,0 +1,4 @@
+base:
+  'zaphkiel':
+  - neovim
+  - storage
