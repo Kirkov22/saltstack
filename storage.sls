@@ -10,9 +10,16 @@ nfs server running:
     - require:
       - pkg: install_nfs
 
-nfs mount running:
+nfs mount service running:
   service.running:
     - name: nfs-mountd
+    - enable: True
+    - require:
+      - pkg: install_nfs
+
+nfs v4 map service running:
+  service.running:
+    - name: nfs-idmapd
     - enable: True
     - require:
       - pkg: install_nfs
