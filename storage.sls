@@ -1,7 +1,7 @@
 
 install_zfs:
   pkg.installed:
-    - name: zfsutils-linux
+    - name: {{ pillar['zfs'] }}
 
 nfs server running:
   service.running:
@@ -26,7 +26,7 @@ nfs v4 map service running:
 
 install_nfs:
   pkg.installed:
-    - name: nfs-kernel-server
+    - name: {{ pillar['nfs_server'] }}
 
 allow NFSv4 (TCP 2049) on LAN:
   iptables.append:

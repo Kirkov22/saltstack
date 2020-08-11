@@ -1,10 +1,10 @@
 install neovim:
   pkg.installed:
-    - name: neovim
+    - name: {{ pillar['neovim'] }}
 
 install_git:
   pkg.installed:
-    - git
+    - name: {{ pillar['git'] }}
 
 clone neovim git repo:
   git.latest:
