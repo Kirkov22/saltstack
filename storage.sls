@@ -10,11 +10,22 @@ install_zfs:
     - enable: True
     - require:
       - pkg: install_nfs
+    - watch:
+      - file: sync_exports
 {% endfor %}
 
 install_nfs:
   pkg.installed:
     - name: {{ pillar['nfs_server'] }}
+
+sync_exports:
+  file.managed:
+    - name: /etc/exports
+    - source: salt://nfs/exports
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
 
 allow NFSv4 (TCP 2049) on LAN:
   iptables.append:
