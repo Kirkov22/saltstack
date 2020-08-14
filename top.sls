@@ -1,4 +1,6 @@
 base:
   'zaphkiel':
-  - neovim
-  - storage
+    - neovim
+    - storage
+  'choir*':
+    - neovim
