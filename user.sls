@@ -10,6 +10,7 @@ pimary_user_{{ pillar['primary_user']['name'] }}:
     - allow_uid_change: True
     - gid: {{ pillar['primary_user']['gid'] }}
     - allow_gid_change: True
+    - password: {{ pillar['primary_user']['password'] }}
     - require:
       - group: {{ pillar['primary_user']['name'] }}_primary_group
 
