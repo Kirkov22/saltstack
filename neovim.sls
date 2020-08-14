@@ -1,3 +1,4 @@
+
 install neovim:
   pkg.installed:
     - name: {{ pillar['neovim'] }}
@@ -13,3 +14,5 @@ clone neovim git repo:
     - rev: HEAD
     - branch: master
     - user: kirkov
+    - require:
+      - sls: user
