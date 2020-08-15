@@ -18,3 +18,10 @@ pimary_user_{{ pillar['primary_user']['name'] }}:
   group.present:
     - name: {{ pillar['primary_user']['primary_group'] }}
     - gid: {{ pillar['primary_user']['gid'] }}
+
+disable_chime:
+  file.line:
+    - name: /etc/inputrc
+    - content: set bell-style none
+    - match: set\s+bell-style\s+none
+    - mode: replace
