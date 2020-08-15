@@ -9,3 +9,17 @@ include:
     - comment: Uriel-2020-08-14
     - require:
       - sls: user
+
+sshd_running:
+  service.running:
+    - name: sshd
+    - enable: True
+    - watch:
+      - file: ssh_disable_cleartext_pw
+
+ssh_disable_cleartext_pw:
+  file.line:
+    - name: /etc/ssh/sshd_config
+    - content: PasswordAuthentication no
+    - match: PasswordAuthentication
+    - mode: replace
