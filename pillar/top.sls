@@ -5,3 +5,5 @@ base:
   'zaphkiel':
     - services
     - shares
+  'choir*':
+    - k3s_config
