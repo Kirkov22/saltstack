@@ -41,7 +41,7 @@ install_k3s_prerequisites:
 
 k3s_script_downloaded:
   file.managed:
-    - name: {{ k['script']['path'] }}/{{ k['script']['name'] }}
+    - name: {{ k['script']['path'] ~'/' ~k['script']['name'] }}
     - source: {{ k['script']['source'] }}
     - source_hash: {{ k['script']['source_hash'] }}
     - user: root
@@ -52,13 +52,13 @@ k3s_script_downloaded:
 
 clean_k3s_script:
   file.absent:
-    - name: {{ k['script']['path'] }}/{{ k['script']['name'] }}
+    - name: {{ k['script']['path'] ~'/' ~k['script']['name'] }}
     - onfail:
       - file: k3s_script_downloaded
 
 install_k3s:
   cmd.run:
-    - name: {{ k['script']['path'] }}/{{ k['script']['name'] }}
+    - name: {{ k['script']['path'] ~'/' ~k['script']['name'] }}
     - unless: systemctl list-unit-files | grep -Fq 'k3s'
     - require:
       - file: k3s_script_downloaded
