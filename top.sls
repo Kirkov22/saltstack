@@ -1,13 +1,12 @@
 base:
+  '*':
+    - user
+    - ssh
+    - neovim
   'zaphkiel':
     - gpg
-    - user
-    - ssh
-    - neovim
     - storage
+    - kubectl
   'choir*':
-    - user
-    - ssh
-    - neovim
     - log2ram
     - k3s
