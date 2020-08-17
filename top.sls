@@ -10,3 +10,4 @@ base:
     - ssh
     - neovim
     - log2ram
+    - k3s
