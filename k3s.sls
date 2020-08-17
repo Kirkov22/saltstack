@@ -55,11 +55,29 @@ k3s_set_url:
   file.append:
     - name: /etc/profile.d/k3s.sh
     - text: export K3S_URL={{ pillar['k3s_node']['url'] }}
+  environ.setenv:
+    - name: K3S_URL
+    - value: {{ pillar['k3s_node']['url'] }}
+    - update_minion: True
 
 k3s_set_token:
   file.append:
     - name: /etc/profile.d/k3s.sh
     - text: export K3S_TOKEN={{ pillar['k3s_node']['token'] }}
+  environ.setenv:
+    - name: K3S_TOKEN
+    - value: {{ pillar['k3s_node']['token'] }}
+    - update_minion: True
+
+k3s_set_exec:
+  file.append:
+    - name: /etc/profile.d/k3s.sh
+    - text: export INSTALL_K3S_EXEC='agent'
+  environ.setenv:
+    - name: INSTALL_K3S_EXEC
+    - value: agent
+    - update_minion: True
+
 {%- endif %}
 
 clean_k3s_script:
@@ -76,5 +94,9 @@ install_k3s:
       - file: k3s_script_downloaded
     {%- if pillar['k3s_node'] %}
       - file: k3s_set_url
+      - environ: k3s_set_url
       - file: k3s_set_token
+      - environ: k3s_set_token
+      - file: k3s_set_exec
+      - environ: k3s_set_exec
     {%- endif %}
