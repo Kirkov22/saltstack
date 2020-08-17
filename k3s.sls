@@ -50,6 +50,18 @@ k3s_script_downloaded:
     - require:
       - file: install_k3s_prerequisites
 
+{%- if pillar['k3s_node'] %}
+k3s_set_url:
+  file.append:
+    - name: /etc/profile.d/k3s.sh
+    - text: export K3S_URL={{ pillar['k3s_node']['url'] }}
+
+k3s_set_token:
+  file.append:
+    - name: /etc/profile.d/k3s.sh
+    - text: export K3S_TOKEN={{ pillar['k3s_node']['token'] }}
+{%- endif %}
+
 clean_k3s_script:
   file.absent:
     - name: {{ k['script']['path'] ~'/' ~k['script']['name'] }}
@@ -62,3 +74,7 @@ install_k3s:
     - unless: systemctl list-unit-files | grep -Fq 'k3s'
     - require:
       - file: k3s_script_downloaded
+    {%- if pillar['k3s_node'] %}
+      - file: k3s_set_url
+      - file: k3s_set_token
+    {%- endif %}
