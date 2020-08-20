@@ -7,6 +7,7 @@ base:
     - gpg
     - storage
     - kubectl
+    - postgres
   'choir*':
     - log2ram
     - k3s
