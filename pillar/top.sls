@@ -6,8 +6,7 @@ base:
     - services
     - shares
   'choir*':
-    - k3s
     - k3s_secret
   'choir(0[2-9]|[1-9][0-9]).*':
     - match: pcre
-    - k3s_node
+    - k3s
