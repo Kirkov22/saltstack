@@ -1,0 +1,44 @@
+
+{%- set k3s = salt['grains.filter_by']({
+  'default': {
+    'req_pkgs': [
+      'curl',
+      'tar',
+      'gzip',
+    ],
+    'script': {
+      'name': 'k3s-bootstrap.sh',
+      'path': '/tmp',
+      'source': 'https://get.k3s.io',
+      'source_hash': '4ec34d9075cb2d040aab5400638cb7e51ab8601ebf9a520983546e0c3851d36b4e6829e4ebf5cd709a82aef78cd3bab1c6ca55a050d89c1849ddbbc042c4014e',
+    },
+  },
+  'Debian': {
+  },
+  'Redhat': {
+  },
+}, merge=salt['pillar.get']('k3s:lookup'),
+   base='default') %}
+
+{%- set datastore_endpoint = salt['pillar.get']('k3s_secret:datastore_endpoint') %}
+{%- set env_vars = {
+  'K3S_DATASTORE_ENDPOINT': datastore_endpoint,
+  'K3S_DATASTORE_CAFILE': '/auth/ca.crt',
+  'K3S_DATASTORE_CERTFILE': '/auth/kubernetes.crt',
+  'K3S_DATASTORE_KEYFILE': '/auth/kubernetes.key',
+} %}
+
+{%- set env_var_overrides = salt['pillar.get']('k3s:env_vars') %}
+{%- if env_var_overrides != None %}
+  {%- for key, value in env_var_overrides.items() %}
+    {%- if env_vars.key is defined %}
+      {%- do env_vars.key.update(value) %}
+    {%- else %}
+      {% do env_vars.update({ key: value }) %}
+    {%- endif  %}
+  {%- endfor %}
+{%- endif %}
+
+{%- do k3s.update({'env_vars': env_vars }) %}
+
+
