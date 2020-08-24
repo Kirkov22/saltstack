@@ -34,16 +34,17 @@
   'K3S_DATASTORE_KEYFILE': postgres_path ~'/user.key',
 } %}
 
-{%- set env_var_overrides = salt['pillar.get']('k3s:env_vars') %}
-{%- if env_var_overrides != None %}
-  {%- for key, value in env_var_overrides.items() %}
-    {%- if env_vars.key is defined %}
-      {%- do env_vars.key.update(value) %}
-    {%- else %}
-      {% do env_vars.update({ key: value }) %}
-    {%- endif  %}
-  {%- endfor %}
+{%- set env_var_overrides = salt['pillar.get']('k3s:env_vars')|default({}) %}
+{%- if env_var_overrides == "" %}
+  {%- set env_var_overrides = {} %}
 {%- endif %}
+{%- for key, value in env_var_overrides.items() %}
+  {%- if env_vars.key is defined %}
+    {%- do env_vars.key.update(value) %}
+  {%- else %}
+    {% do env_vars.update({ key: value }) %}
+  {%- endif  %}
+{%- endfor %}
 
 {%- do k3s.update({'env_vars': env_vars }) %}
 
