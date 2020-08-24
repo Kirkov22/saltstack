@@ -11,3 +11,4 @@ base:
   'choir*':
     - log2ram
     - k3s
+    - nfs_shares

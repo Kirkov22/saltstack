@@ -1,0 +1,16 @@
+
+{%- set shares = salt['grains.filter_by']({
+  'default': {
+  },
+  'Debian': {
+    'required_pkgs': [
+      'nfs-common',
+    ],
+    'fstab_path': '/etc/fstab',
+  },
+  'Redhat': {
+    'required_pkgs': [],
+    'fstab_path': '',
+  },
+}, merge=salt['pillar.get']('k3s:lookup'),
+   base='default') %}
