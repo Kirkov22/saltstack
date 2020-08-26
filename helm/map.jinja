@@ -1,0 +1,26 @@
+
+{%- set helm = salt['grains.filter_by']({
+  'default': {
+    'pkg': 'helm',
+    'key': '',
+    'repo': {
+      'source': '',
+      'list_file': '',
+    },
+    'req_pkgs': [],
+  },
+  'Debian': {
+    'pkg': 'helm',
+    'key': 'https://baltocdn.com/helm/signing.asc',
+    'repo': {
+      'source': 'deb https://baltocdn.com/helm/stable/debian/ all main',
+      'list_file': 'helm-stable-debian.list',
+    },
+    'req_pkgs': [
+      'apt-transport-https'
+    ],
+  },
+  'Redhat': {
+  },
+}, merge=salt['pillar.get']('helm:lookup'),
+   base='default') %}

@@ -8,6 +8,7 @@ base:
     - storage
     - kubectl
     - postgres
+    - helm
   'choir*':
     - log2ram
     - psql_ids
