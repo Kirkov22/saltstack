@@ -10,5 +10,6 @@ base:
     - postgres
   'choir*':
     - log2ram
+    - psql_ids
     - k3s
     - nfs_shares

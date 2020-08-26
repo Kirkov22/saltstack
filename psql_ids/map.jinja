@@ -1,0 +1,15 @@
+
+{%- set psql_ids = salt['grains.filter_by']({
+  'default': {
+    'postgres_cert_path': '/root/.postgres/',
+    'user': 'root',
+    'ca_crt_name': 'ca.crt',
+    'user_crt_name': 'user.crt',
+    'user_key_name': 'user.key',
+  },
+  'Debian': {
+  },
+  'Redhat': {
+  },
+}, merge=salt['pillar.get']('psql_ids:lookup'),
+   base='default') %}

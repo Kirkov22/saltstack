@@ -25,47 +25,6 @@ set_legacy_ip6tables:
 
 {%- from 'k3s/map.jinja' import k3s with context %}
 
-k3s_postgres_keys_dir:
-  file.directory:
-    - name: {{ k3s['postgres_path'] }}
-    - user: {{ k3s['user']['name'] }}
-    - group: {{ k3s['user']['name'] }}
-    - dir_mode: 0700
-    - makedirs: True
-
-k3s_postgres_keys_ca:
-  file.managed:
-    - name: {{ k3s['postgres_path'] ~'/ca.crt' }}
-    - contents: |
-        {{ pillar['k3s_secret']['psql_certs']['ca'] | indent(width=8, indentfirst=False) }}
-    - user: {{ k3s['user']['name'] }}
-    - group: {{ k3s['user']['name'] }}
-    - mode: 600
-    - require:
-      - file: k3s_postgres_keys_dir
-
-k3s_postgres_keys_user:
-  file.managed:
-    - name: {{ k3s['postgres_path'] ~'/user.crt' }}
-    - contents: |
-        {{ pillar['k3s_secret']['psql_certs']['user_pub'] | indent(width=8, indentfirst=False) }}
-    - user: {{ k3s['user']['name'] }}
-    - group: {{ k3s['user']['name'] }}
-    - mode: 600
-    - require:
-      - file: k3s_postgres_keys_dir
-
-k3s_postgres_keys_user_key:
-  file.managed:
-    - name: {{ k3s['postgres_path'] ~'/user.key' }}
-    - contents: |
-        {{ pillar['k3s_secret']['psql_certs']['user_key'] | indent(width=8, indentfirst=False) }}
-    - user: {{ k3s['user']['name'] }}
-    - group: {{ k3s['user']['name'] }}
-    - mode: 600
-    - require:
-      - file: k3s_postgres_keys_dir
-
 k3s_prerequisites:
   pkg.installed:
     - names: {{ k3s['req_pkgs']|json }}
@@ -115,7 +74,3 @@ k3s_install:
     - require:
       - pkg: k3s_prerequisites
       - file: k3s_script_downloaded
-      - file: k3s_postgres_keys_ca
-      - file: k3s_postgres_keys_user
-      - file: k3s_postgres_keys_user_key
-
