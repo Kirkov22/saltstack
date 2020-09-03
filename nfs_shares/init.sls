@@ -18,6 +18,7 @@ nfs_shares_{{ share['comment'] }}:
     - mount: True
     - persist: True
     - config: {{ shares['fstab_path'] }}
+    - user: root
     - require:
       - pkg: nfs_required_pkg
 

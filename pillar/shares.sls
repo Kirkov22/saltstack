@@ -26,5 +26,5 @@ shares:
     options:
       - rw
       - sync
-      - root_squash
+      - no_root_squash
       - no_subtree_check
