@@ -6,6 +6,7 @@ base:
   'zaphkiel':
     - gpg
     - storage
+    - samba
     - kubectl
     - postgres
     - helm

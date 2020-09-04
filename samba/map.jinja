@@ -1,0 +1,23 @@
+
+{%- set samba = salt['grains.filter_by']({
+  'default': {
+    'pkgs': [
+      'samba',
+    ],
+    'service': 'smbd',
+    'share_file': '/etc/samba/smb.d/samba_shares.conf',
+    'shares': [],
+  },
+  'Debian': {
+    'pkgs': [
+      'samba',
+    ],
+    'service': 'smbd',
+  },
+  'Redhat': {
+    'pkgs': [
+    ],
+    'service': '',
+  },
+}, merge=salt['pillar.get']('samba:lookup'),
+   base='default') %}

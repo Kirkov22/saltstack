@@ -5,6 +5,7 @@ base:
   'zaphkiel':
     - services
     - shares
+    - samba
   'choir*':
     - k3s_secret
     - shares
