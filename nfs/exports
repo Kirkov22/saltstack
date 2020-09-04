@@ -1,3 +1,4 @@
-{% for share in pillar['shares'] %}
+{%- from 'nfs/map.jinja' import nfs with context -%}
+{%- for share in nfs['shares'] -%}
 {{ share['path'] }} {% for host in share['hosts'] %}{{ host }}({{ share['options']|join(',') }}){{ ' ' if not loop.last else '' }}{% endfor %}
-{% endfor %}
+{%- endfor %}

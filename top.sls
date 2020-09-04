@@ -5,7 +5,7 @@ base:
     - neovim
   'zaphkiel':
     - gpg
-    - storage
+    - nfs
     - samba
     - kubectl
     - postgres

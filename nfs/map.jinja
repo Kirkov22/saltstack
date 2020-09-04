@@ -1,0 +1,73 @@
+{# NFS config for servers/clients 
+
+  * override role to client in pillar
+  * each share should have the following contents:
+    { 'comment': <Value not used>,
+      'host': <hostname or IP of the server>,
+      'path': <Path to the NFS share on the server>,
+      'mnt': <Mountpoint for the share on the client>,
+      'hosts:' [ <Hostname / IP / IP Range> ... ],
+      'options': [ <NFS export option> ... ],
+    },
+#}
+{%- set nfs = salt['grains.filter_by']({
+  'default': {
+    'role': 'server',
+    'server-pkgs': [
+      'nfs-kernel-server',
+    ],
+    'client-pkgs': [
+      'nfs-common',
+    ],
+    'services': [
+      'nfs-server',
+      'nfs-mountd',
+      'nfs-idmapd',
+    ],
+    'exports_file': '/etc/exports',
+    'fstab_path': '/etc/fstab',
+    'shares': [
+      { 'comment': 'nextcloud',
+        'host': 'zaphkiel.orchid.street',
+        'path': '/tank/nextcloud',
+        'mnt': '/mnt/nextcloud',
+        'hosts': [
+          '192.168.2.51',
+          '192.168.2.52',
+          '192.168.2.53',
+        ],
+        'options': [
+          'rw',
+          'sync',
+          'no_root_squash',
+          'no_subtree_check',
+        ],
+      },
+    ],
+  },
+  'Debian': {
+    'server-pkgs': [
+      'nfs-kernel-server',
+    ],
+    'client-pkgs': [
+      'nfs-common',
+    ],
+    'services': [
+      'nfs-server',
+      'nfs-mountd',
+      'nfs-idmapd',
+    ],
+  },
+  'Redhat': {
+    'server-pkgs': [
+      'nfs-kernel-server',
+    ],
+    'client-pkgs': [
+      'nfs-common',
+    ],
+    'service': [
+    ],
+  },
+}, merge=salt['pillar.get']('nfs:lookup'),
+   base='default') %}
+
