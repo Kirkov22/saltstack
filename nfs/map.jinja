@@ -43,6 +43,22 @@
           'no_subtree_check',
         ],
       },
+      { 'comment': 'media',
+        'host': 'zaphkiel.orchid.street',
+        'path': '/tank/media',
+        'mnt': '/mnt/media',
+        'hosts': [
+          '192.168.2.51',
+          '192.168.2.52',
+          '192.168.2.53',
+        ],
+        'options': [
+          'rw',
+          'sync',
+          'no_root_squash',
+          'no_subtree_check',
+        ],
+      }
     ],
   },
   'Debian': {
