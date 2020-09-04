@@ -63,4 +63,29 @@ nfs_disallow_wan:
   - comment: "Drop non-local NFSv4"
   - save: True
 
+{%- elif nfs['role']=='client' %}
+
+{%- for pkg in nfs['client-pkgs'] %}
+nfs_install_{{ pkg }}:
+  pkg.installed:
+    - name: {{ pkg }}
+{%- endfor %}
+
+{%- for share in nfs['shares'] %}
+nfs_shares_{{ share['comment'] }}:
+  mount.mounted:
+    - name: {{ share['mnt'] }}
+    - device: {{ share['host'] ~':' ~share['path'] }}
+    - fstype: nfs4
+    - mkmnt: True
+    - mount: True
+    - persist: True
+    - config: {{ nfs['fstab_path'] }}
+    - user: root
+    - require:
+      {%- for pkg in nfs['client-pkgs'] %}
+      - pkg: nfs_install_{{ pkg }}
+      {%- endfor %}
+{%- endfor %}
+
 {%- endif %}

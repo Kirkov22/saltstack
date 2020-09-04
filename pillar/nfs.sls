@@ -1,0 +1,4 @@
+
+nfs:
+  lookup:
+    role: client
