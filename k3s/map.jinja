@@ -1,11 +1,13 @@
 
 {%- set k3s = salt['grains.filter_by']({
   'default': {
+    'role': 'server',
     'req_pkgs': [
       'curl',
       'tar',
       'gzip',
     ],
+    'service': 'k3s',
     'script': {
       'name': 'k3s-bootstrap.sh',
       'path': '/tmp',

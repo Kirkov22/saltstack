@@ -1,7 +1,10 @@
 #!jinja|yaml|gpg
 
 k3s:
-  lookups:
+  lookup:
+    role: agent
+    service: k3s-agent
+
   env_vars:
     K3S_TOKEN: |
       -----BEGIN PGP MESSAGE-----

@@ -74,3 +74,23 @@ k3s_install:
     - require:
       - pkg: k3s_prerequisites
       - file: k3s_script_downloaded
+
+{%- if k3s['role']=='server' %}
+k3s_cmd_args:
+  file.line:
+    - name: /etc/systemd/system/{{ k3s['service'] }}.service
+    - content: --disable servicelb \
+    - after: {{ k3s['role'] }} \\
+    - mode: ensure
+{%- endif %}
+
+k3s_service:
+  service.running:
+    - name: {{ k3s['service'] }}
+    - enable: True
+    - require:
+      - cmd: k3s_install
+    - watch:
+      {%- if k3s['role']=='server' %}
+      - file: k3s_cmd_args
+      {%- endif %}
