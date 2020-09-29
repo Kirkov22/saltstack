@@ -1,0 +1,30 @@
+
+{%- set psql = salt['grains.filter_by']({
+  'default': {
+    'pkg': 'postgresql-12',
+    'repo': {
+      'name': '',
+      'file': '',
+      'key_url': '',
+    },
+    'service': 'postgresql',
+    'extensions': [],
+    'version': 12,
+    'data_location': "'/tank/postgres/postgresql/12/main'",
+  },
+  'Debian': {
+    'pkg': 'postgresql-12',
+    'repo': {
+      'name': 'deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main',
+      'file': '/etc/apt/sources.list.d/postgres.list',
+      'key_url': 'https://www.postgresql.org/media/keys/ACCC4CF8.asc',
+    },
+    'service': 'postgresql@12-main',
+  },
+  'Redhat': {
+    'pkg': '',
+    'repo': {},
+    'service': '',
+  },
+}, merge=salt['pillar.get']('psql:lookup'),
+   base='default') %}
