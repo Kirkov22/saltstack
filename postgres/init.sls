@@ -65,3 +65,25 @@ postgres_service:
     - enable: True
     - require:
       - file: postgres_remove_initd
+{%- if psql.extensions|length > 0 %}
+    - watch:
+{%- for extension in psql.extensions %}
+      - pkg: postgres_extension_{{ extension.pkg }}
+
+postgres_extension_{{ extension.pkg }}:
+  pkg.latest:
+    - name: {{ extension.pkg }}
+    {%- if extension.repo %}
+    - require:
+      - pkgrepo: postgres_pkgrepo_{{ extension.pkg }}
+
+postgres_pkgrepo_{{ extension.pkg }}:
+  pkgrepo.managed:
+    {%- if extension.repo.ppa %}
+    - ppa: {{ extension.repo.ppa }}
+    {%- endif %}
+    - refresh: True
+
+    {%- endif %}
+{%- endfor %}
+{%- endif %}

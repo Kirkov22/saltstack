@@ -20,6 +20,13 @@
       'key_url': 'https://www.postgresql.org/media/keys/ACCC4CF8.asc',
     },
     'service': 'postgresql@12-main',
+    'extensions': [{
+        'pkg': 'timescaledb-postgresql-12',
+        'repo': {
+          'ppa': 'timescale/timescaledb-ppa',
+        },
+      },
+    ],
   },
   'Redhat': {
     'pkg': '',
