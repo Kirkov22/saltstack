@@ -5,6 +5,8 @@ base:
   'zaphkiel':
     - services
     - samba
+    - k3s_secret
+    - k3s
   'choir*':
     - k3s_secret
     - psql_ids
