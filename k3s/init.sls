@@ -42,7 +42,8 @@ k3s_script_downloaded:
   file.managed:
     - name: {{ k3s['script']['path'] ~'/' ~k3s['script']['name'] }}
     - source: {{ k3s['script']['source'] }}
-    - source_hash: {{ k3s['script']['source_hash'] }}
+#    - source_hash: {{ k3s['script']['source_hash'] }}
+    - skip_verify: True
     - user: {{ k3s['user']['name'] }}
     - group: {{ k3s['user']['name'] }}
     - mode: 744
@@ -90,7 +91,7 @@ k3s_service:
     - enable: True
     - require:
       - cmd: k3s_install
+    {%- if k3s['role']=='server' %}
     - watch:
-      {%- if k3s['role']=='server' %}
       - file: k3s_cmd_args
-      {%- endif %}
+    {%- endif %}
